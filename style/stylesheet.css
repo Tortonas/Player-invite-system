@@ -1,0 +1,10 @@
+.github-logo-bottom-right {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 30px;
+}
+
+.github-logo-bottom-right:hover {
+    opacity: 0.5;
+}
