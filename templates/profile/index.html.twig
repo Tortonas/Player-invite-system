@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Player invite system - Profile{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card mx-auto" style="width: 18rem;">
+        <div class="card-body mx-auto">
+            <img src="../images/rampage.png" alt="">
+            <h5 class="card-title">Tortonas</h5>
+            <h6 class="card-subtitle text-muted">SteamID</h6>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Total taken - <b>0</b></li>
+            <li class="list-group-item">Total recruited - <b>0</b></li>
+            <li class="list-group-item">Total rejected - <b>0</b></li>
+            <li class="list-group-item">Daily limit - <b>25</b></li>
+        </ul>
+    </div>
+
+
+    <div class="w-50 mx-auto mt-5">
+        <form method="POST">
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" placeholder="your_email@gmail.com" disabled>
+            </div>
+            <div class="form-group">
+                <label>Old password</label>
+                <input type="password" class="form-control"placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label>New password</label>
+                <input type="password" class="form-control"placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label>Repeat new password</label>
+                <input type="password" class="form-control"placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-danger">Change password</button>
+        </form>
+    </div>
+{% endblock %}
