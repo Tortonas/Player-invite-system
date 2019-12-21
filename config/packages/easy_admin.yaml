@@ -1,5 +1,29 @@
+# config/packages/easy_admin.yaml
 easy_admin:
     entities:
-        # List the entity class name you want to manage
-        - App\Entity\User
-        - App\Entity\Recruit
+        User:
+            class: App\Entity\User
+            form:
+                fields:
+                    -
+                        property: 'roles'
+                        type: 'choice'
+                        type_options:
+                            multiple: true
+                            expanded: true
+                            required: true
+                            choices:
+                                'ROLE_SUPER_ADMIN': 'ROLE_SUPER_ADMIN'
+                                'ROLE_ADMIN': 'ROLE_ADMIN'
+                                'ROLE_USER': 'ROLE_USER'
+                    - { property: 'email', type: 'email' }
+                    - { property: 'password', type: 'text' }
+                    - { property: 'username', type: 'text' }
+                    - { property: 'steam64id', type: 'text' }
+                    - { property: 'totalTaken', type: 'integer' }
+                    - { property: 'totalRecruited', type: 'integer' }
+                    - { property: 'totalRejected', type: 'integer' }
+                    - { property: 'totalSkipped', type: 'integer' }
+                    - { property: 'dailyLimit', type: 'integer' }
+        Recruit:
+            class: App\Entity\Recruit
