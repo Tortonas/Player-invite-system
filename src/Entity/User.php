@@ -48,7 +48,7 @@ class User implements UserInterface
     private $steam64id;
 
     /**
-     * @ORM\Column(name="totalTaken", type="integer", nullable=false)
+     * @ORM\Column(name="totalTaken", type="integer", nullable=false, options={"default"="0"})
      */
     private $totaltaken = '0';
 
@@ -58,19 +58,30 @@ class User implements UserInterface
     private $dailylimit = '25';
 
     /**
-     * @ORM\Column(name="totalRecruited", type="integer", nullable=false)
+     * @ORM\Column(name="totalRecruited", type="integer", nullable=false, options={"default"="0"})
      */
     private $totalrecruited = '0';
 
     /**
-     * @ORM\Column(name="totalRejected", type="integer", nullable=false)
+     * @ORM\Column(name="totalRejected", type="integer", nullable=false, options={"default"="0"})
      */
     private $totalrejected = '0';
+
+    /**
+     * @ORM\Column(name="totalSkipped", type="integer", nullable=false, options={"default"="0"})
+     */
+    private $totalSkipped = '0';
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Recruit", mappedBy="user")
      */
     private $recruits;
+
+    public function __toString()
+    {
+        return $this->username.' '.$this->email;
+    }
+
 
     public function __construct()
     {
@@ -273,6 +284,47 @@ class User implements UserInterface
 
         return $this;
     }
+    public function increaseTotalTaken()
+    {
+        $this->totaltaken++;
 
+        return $this;
+    }
 
+    public function increaseRecruited()
+    {
+        $this->totalrecruited++;
+
+        return $this;
+    }
+
+    public function increaseRejected()
+    {
+        $this->totalrejected++;
+
+        return $this;
+    }
+
+    public function increaseSkipped()
+    {
+        $this->totalSkipped++;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalSkipped()
+    {
+        return $this->totalSkipped;
+    }
+
+    /**
+     * @param mixed $totalSkipped
+     */
+    public function setTotalSkipped($totalSkipped): void
+    {
+        $this->totalSkipped = $totalSkipped;
+    }
 }

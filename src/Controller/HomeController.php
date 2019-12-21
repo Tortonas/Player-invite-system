@@ -17,6 +17,9 @@ class HomeController extends AbstractController
      */
     public function index(Request $request)
     {
+        date_default_timezone_set("Europe/Vilnius"); // move this later somewhere else
+
+
         $entityManager = $this->getDoctrine()->getManager();
 
         /** @var Recruit $recruit */
@@ -37,13 +40,18 @@ class HomeController extends AbstractController
             else if ($request->request->get('takePlayerBtn') == 'clicked')
             {
                 $recruit->setUser($loggedUser);
+                $recruit->setTakenDate(new \DateTime('now'));
+                $loggedUser->increaseTotalTaken();
                 $entityManager->persist($recruit);
+                $entityManager->persist($loggedUser);
                 $entityManager->flush();
             }
             else if($request->request->get('skipPlayerBtn') == 'clicked')
             {
                 $recruit->setAction('skipped');
+                $loggedUser->increaseSkipped();
                 $entityManager->persist($recruit);
+                $entityManager->persist($loggedUser);
                 $entityManager->flush();
             }
 
@@ -56,7 +64,6 @@ class HomeController extends AbstractController
         }
 
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
             'recruit' => $recruit,
         ]);
     }

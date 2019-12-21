@@ -2,19 +2,22 @@
 
 {% block title %}Player invite system - Profile{% endblock %}
 
+{# @var user \App\Entity\User #}
+
 {% block body %}
 <div class="container mt-4">
     <div class="card mx-auto" style="width: 18rem;">
         <div class="card-body mx-auto">
-            <img src="../images/rampage.png" alt="">
-            <h5 class="card-title">Tortonas</h5>
-            <h6 class="card-subtitle text-muted">SteamID</h6>
+            <img src="{{ asset('images/rampage.png') }}" alt="">
+            <h5 class="card-title">{{ user.username }}</h5>
+            <h6 class="card-subtitle text-muted">{{ user.steam64id }}</h6>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Total taken - <b>0</b></li>
-            <li class="list-group-item">Total recruited - <b>0</b></li>
-            <li class="list-group-item">Total rejected - <b>0</b></li>
-            <li class="list-group-item">Daily limit - <b>25</b></li>
+            <li class="list-group-item">Total taken - <b>{{ user.totaltaken }}</b></li>
+            <li class="list-group-item">Total skipped - <b>{{ user.totalSkipped }}</b></li>
+            <li class="list-group-item">Total recruited - <b>{{ user.totalrecruited }}</b></li>
+            <li class="list-group-item">Total rejected - <b>{{ user.totalrejected }}</b></li>
+            <li class="list-group-item">Daily limit - <b>{{ user.dailylimit }}</b></li>
         </ul>
     </div>
 
@@ -23,7 +26,7 @@
         <form method="POST">
             <div class="form-group">
                 <label>Email address</label>
-                <input type="email" class="form-control" placeholder="your_email@gmail.com" disabled>
+                <input type="email" class="form-control" placeholder="{{ user.email }}" disabled>
             </div>
             <div class="form-group">
                 <label>Old password</label>

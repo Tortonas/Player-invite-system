@@ -4,43 +4,65 @@
 
 {% block body %}
     <div class="container mt-4">
-        <form method="POST">
-            <button type="submit" class="btn btn-primary mb-1 float-right">Save</button>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">When added?</th>
-                    <th scope="col">Steam name</th>
-                    <th scope="col">Steam ID</th>
-                    <th scope="col">Contacted?</th>
-                    <th scope="col">Steam Link</th>
-                    <th scope="col">Add chat log</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>2019-12-19 11:07</td>
-                    <td>Random steam name</td>
-                    <td>STEAM_1:0:174430120</td>
-                    <td>
-                        <div class="mx-auto">
-                            <input type="checkbox" name="vehicle" value="Bike">
-                        </div>
-                    </td>
-                    <td><a href="#">Steam URL</a></td>
-                    <td>
-                        <a href="#">Notes</a>
-                    </td>
-                    <td>
-                        <button class="btn btn-success btn-sm">Recruited</button>
-                        <button class="btn btn-danger btn-sm ml-1">Rejected</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </form>
+        {% if recruits is empty %}
+            <div class="card mx-auto" style="width: 20rem">
+                <div class="card-body">
+                    <h5 class="card-title">Your list is empty! To get more people <a href="{{ path('app_home') }}">click here</a></h5>
+                </div>
+            </div>
+        {% else %}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <form method="POST">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">When added?</th>
+                        <th scope="col">Steam name</th>
+                        <th scope="col">Steam ID</th>
+                        <th scope="col">Contacted?</th>
+                        <th scope="col">Steam Link</th>
+                        <th scope="col">Add chat log</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {# @var recruit \App\Entity\Recruit#}
+                    {% for recruit in recruits %}
+                        <tr>
+                            <td>{{ recruit.id }}</td>
+                            <td>{{ recruit.takenDate | date('Y-m-d H:i:s') }}</td>
+                            <td>{{ recruit.nickname }}</td>
+                            <td>{{ recruit.steamId }}</td>
+                            <td>
+                                {% if recruit.contacted == 1 %}
+                                    <button type="submit" name="contacted" value="{{ recruit.id }}" class="btn btn-success btn-sm">Yes</button>
+                                {% else %}
+                                    <button type="submit" name="contacted" value="{{ recruit.id }}" class="btn btn-danger btn-sm">No</button>
+                                {% endif %}
+                            </td>
+                            <td><a href="{{ recruit.steamLink }}">Steam URL</a></td>
+                            <td>
+                                <a href="#">Notes</a>
+                            </td>
+                            <td>
+                                <button name="recruited" value="{{ recruit.id }}" class="btn btn-success btn-sm">Recruited</button>
+                                <button name="rejected" value="{{ recruit.id }}" class="btn btn-danger btn-sm ml-1">Rejected</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        {% endif %}
     </div>
 {% endblock %}

@@ -27,9 +27,9 @@ class Recruit
     private $steamLink;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default"=0})
      */
-    private $contacted;
+    private $contacted = 0;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -47,14 +47,33 @@ class Recruit
     private $nickname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, options={"default"="pending"})
      */
-    private $action;
+    private $action = 'pending';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recruits")
      */
     private $user;
+
+    public function __toString()
+    {
+        return $this->nickname;
+    }
+
+    public function flipContacted()
+    {
+        if($this->contacted == 0)
+        {
+            $this->contacted = 1;
+        }
+        else
+        {
+            $this->contacted = 0;
+        }
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
