@@ -5,21 +5,33 @@
 {% block body %}
 
 <div class="container mt-4">
-    <div class="card mx-auto" style="width: 20rem;">
-        <img class="card-img-top" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/c0/c0ad5cb411d88fcc0234abfe65d475980a7e4376_full.jpg" alt="User steam picture">
-        <div class="card-body">
-            <h5 class="card-title">Random player name</h5>
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">STEAM_1:0:174430120</li>
-        </ul>
-        <div class="card-body">
-            <form method="POST">
-                <a href="#" class="card-link"><button class="btn btn-primary btn-sm">Steam link</button></a>
-                <button class="btn btn-success btn-sm">Take player</button>
-                <button class="btn btn-danger btn-sm">Skip player</button>
-            </form>
-        </div>
+    <div class="card mx-auto" style="width: 20rem">
+        {% if is_granted ('ROLE_ADMIN') %}
+            {% if recruit is empty %}
+                <div class="card-body">
+                    <h5 class="card-title">There are no players left in database!</h5>
+                </div>
+            {% else %}
+                <img class="card-img-top" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/c0/c0ad5cb411d88fcc0234abfe65d475980a7e4376_full.jpg" alt="User steam picture">
+                <div class="card-body">
+                    <h5 class="card-title">{{ recruit.nickname }}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ recruit.steamId }}</li>
+                </ul>
+                <div class="card-body">
+                    <form method="POST">
+                        <a target="_blank" href="{{ recruit.steamLink }}" class="card-link"><button name="steamlinkBtn" value="clicked" class="btn btn-primary btn-sm">Steam link</button></a>
+                        <button name="takePlayerBtn" value="clicked" class="btn btn-success btn-sm">Take player</button>
+                        <button name="skipPlayerBtn" value="clicked" class="btn btn-danger btn-sm">Skip player</button>
+                    </form>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="card-body">
+                <h5 class="card-title">Hello there and welcome to player invite system! <a href="{{ path('app_login') }}">Press here to login to the system!</a></h5>
+            </div>
+        {% endif %}
     </div>
 </div>
 

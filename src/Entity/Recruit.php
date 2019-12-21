@@ -42,6 +42,11 @@ class Recruit
     private $note;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $nickname;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $action;
@@ -138,5 +143,21 @@ class Recruit
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNickname()
+    {
+        return $this->nickname;
+    }
+
+    /**
+     * @param mixed $nickname
+     */
+    public function setNickname($nickname): void
+    {
+        $this->nickname = $nickname;
     }
 }
