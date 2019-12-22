@@ -52,7 +52,7 @@
                             </td>
                             <td><a href="{{ recruit.steamLink }}">Steam URL</a></td>
                             <td>
-                                <a href="#">Notes</a>
+                                <a href="{{ path('app_viewnote', { 'id': recruit.id }) }}">Notes</a>
                             </td>
                             <td>
                                 <button name="recruited" value="{{ recruit.id }}" class="btn btn-success btn-sm">Recruited</button>

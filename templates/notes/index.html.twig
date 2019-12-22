@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Player invite system - View note{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    {% if recruit is empty %}
+        <h1>This user doesn't exist!</h1>
+    {% else %}
+        <a href="{{ path('app_list') }}">Go back</a>
+        <form method="POST">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <label for="noteTextArea">Please write any notes regarding player <b>{{ recruit.nickname }}</b>, such as chat log.</label>
+                <textarea name="noteText" class="form-control" id="noteTextArea" rows="3">{{ recruit.note }}</textarea>
+                <button name="saveBtn" value="save" class="btn btn-primary mt-2" type="submit" {% if canEdit == false %} disabled {% endif %} >Save</button>
+            </div>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
