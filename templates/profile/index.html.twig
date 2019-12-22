@@ -22,6 +22,17 @@
     </div>
 
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <div class="w-50 mx-auto mt-5">
         <form method="POST">
             <div class="form-group">
@@ -30,15 +41,15 @@
             </div>
             <div class="form-group">
                 <label>Old password</label>
-                <input type="password" class="form-control"placeholder="Password">
+                <input name="oldPassword" type="password" class="form-control" placeholder="Password">
             </div>
             <div class="form-group">
                 <label>New password</label>
-                <input type="password" class="form-control"placeholder="Password">
+                <input name="newPassword" type="password" class="form-control" placeholder="Password">
             </div>
             <div class="form-group">
                 <label>Repeat new password</label>
-                <input type="password" class="form-control"placeholder="Password">
+                <input name="newPassword2" type="password" class="form-control" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-danger">Change password</button>
         </form>
