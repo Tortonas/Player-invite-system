@@ -152,10 +152,29 @@ class User implements UserInterface
 
     public function setPassword(string $password): self
     {
-        $hash = password_hash($password, PASSWORD_ARGON2I);
-        $this->password = $hash;
+        $this->password = $password;
 
         return $this;
+    }
+
+
+    // Method for Easy Admin Bundle
+    public function setPlainPassword($password): self
+    {
+
+        if (!$password) {
+            return $this;
+        }
+
+        $hash = password_hash($password, PASSWORD_ARGON2I);
+
+        return $this->setPassword($hash);
+    }
+
+    // Method for Easy Admin Bundle
+    public function getPlainPassword()
+    {
+        return '';
     }
 
     /**

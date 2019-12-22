@@ -25,9 +25,12 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
+            $user->setPlainPassword(
                 $form->get('plainPassword')->getData()
             );
+
+            $user->setUsername('Undefined');
+            $user->setSteam64id('Undefined');
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

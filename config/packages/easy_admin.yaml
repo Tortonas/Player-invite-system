@@ -28,7 +28,7 @@ easy_admin:
                                 'ROLE_ADMIN': 'ROLE_ADMIN'
                                 'ROLE_USER': 'ROLE_USER'
                     - { property: 'email', type: 'email' }
-                    - { property: 'password', type: 'password' }
+                    - { property: 'plainPassword', type: 'password', type_options: { required: false } }
                     - { property: 'username', type: 'text' }
                     - { property: 'steam64id', type: 'text' }
                     - { property: 'totalTaken', type: 'integer' }
