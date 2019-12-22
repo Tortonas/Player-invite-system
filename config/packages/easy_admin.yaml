@@ -3,6 +3,17 @@ easy_admin:
     entities:
         User:
             class: App\Entity\User
+            list:
+                fields:
+                    - { property: 'email', type: 'email' }
+                    - { property: 'roles', template: 'admin/user/roles-type-read.html.twig' }
+                    - { property: 'username', type: 'text' }
+                    - { property: 'steam64id', type: 'text' }
+                    - { property: 'totalTaken', type: 'integer' }
+                    - { property: 'totalRecruited', type: 'integer' }
+                    - { property: 'totalRejected', type: 'integer' }
+                    - { property: 'totalSkipped', type: 'integer' }
+                    - { property: 'dailyLimit', type: 'integer' }
             form:
                 fields:
                     -
@@ -17,7 +28,7 @@ easy_admin:
                                 'ROLE_ADMIN': 'ROLE_ADMIN'
                                 'ROLE_USER': 'ROLE_USER'
                     - { property: 'email', type: 'email' }
-                    - { property: 'password', type: 'text' }
+                    - { property: 'password', type: 'password' }
                     - { property: 'username', type: 'text' }
                     - { property: 'steam64id', type: 'text' }
                     - { property: 'totalTaken', type: 'integer' }
