@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Recruit;
 use App\Entity\User;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
@@ -13,7 +16,8 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     * @throws DBALException
      */
     public function index(Request $request)
     {
@@ -39,20 +43,39 @@ class HomeController extends AbstractController
             }
             else if ($request->request->get('takePlayerBtn') == 'clicked')
             {
-                $recruit->setUser($loggedUser);
-                $recruit->setTakenDate(new \DateTime('now'));
-                $loggedUser->increaseTotalTaken();
-                $entityManager->persist($recruit);
-                $entityManager->persist($loggedUser);
-                $entityManager->flush();
+                if($this->canITakeOrSkipPlayer())
+                {
+                    $this->addFlash('danger','I\'m sorry, you\'ve hit your daily limit which is ' . $this->getUser()->getDailyLimit());
+                }
+                else
+                {
+                    $recruit->setUser($loggedUser);
+                    $recruit->setTakenDate(new \DateTime('now'));
+                    $loggedUser->increaseTotalTaken();
+                    $entityManager->persist($recruit);
+                    $entityManager->persist($loggedUser);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Successfully added!');
+                }
             }
             else if($request->request->get('skipPlayerBtn') == 'clicked')
             {
-                $recruit->setAction('skipped');
-                $loggedUser->increaseSkipped();
-                $entityManager->persist($recruit);
-                $entityManager->persist($loggedUser);
-                $entityManager->flush();
+                if($this->canITakeOrSkipPlayer())
+                {
+                    $this->addFlash('danger','I\'m sorry, you\'ve hit your daily limit which is ' . $this->getUser()->getDailyLimit());
+                }
+                else
+                {
+                    $this->addFlash('success', 'Successfully skipped!');
+                    $recruit->setAction('skipped');
+                    $loggedUser->increaseSkipped();
+                    $recruit->setUser($loggedUser);
+                    $recruit->setTakenDate(new \DateTime('now'));
+
+                    $entityManager->persist($recruit);
+                    $entityManager->persist($loggedUser);
+                    $entityManager->flush();
+                }
             }
 
             /** @var Recruit $recruit */
@@ -66,5 +89,30 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'recruit' => $recruit,
         ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canITakeOrSkipPlayer()
+    {
+        /** @var Connection $conn */
+        $conn = $this->getDoctrine()->getConnection();
+
+        $sql = 'SELECT * FROM recruit WHERE user_id = :user_id AND taken_date >= CURDATE()';
+
+        try
+        {
+            $stmt = $conn->prepare($sql);
+        }
+        catch (DBALException $e)
+        {
+            $this->addFlash('danger', 'SQL error in HomeController!');
+        }
+        $stmt->execute(array(
+            'user_id' => $this->getUser()->getId()
+        ));
+
+        return $stmt->rowCount() >= $this->getUser()->getDailyLimit();
     }
 }
