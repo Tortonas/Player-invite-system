@@ -7,9 +7,6 @@ This project was done to strengthen my knowledge using `Symfony` framework. It w
 3. Add your database connection information to `.env` file (or to `.env.local`)
 4. `$ php bin/console doctrine:schema:update --force`
 5. If you want to have some data, upload SQL dump from `database_dump.sql
-# Demo
-1. Visit the website (you can find it at the top)
-2. Login using `admin@admin.com` with password `adminas`
 # Where I Improved
 1. Symfony
 2. Easy admin bundle
